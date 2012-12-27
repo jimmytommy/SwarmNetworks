@@ -1,7 +1,11 @@
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Abstraction of IP packets being sent on a network.
+ */
 public class Packet {
+
     // Starting Packet Time to Live
     private static final int INIT_TTL = 255;
 
@@ -26,12 +30,16 @@ public class Packet {
         this.payload  = payload;
     }
 
-    public int getSrcAddr()    { return srcAddr;    }
-    public int getDestAddr()   { return destAddr;   }
-    public int getTtl()        { return ttl;        }
-    public Object getPayload() { return payload;    }
+    public int    getSrcAddr()  { return srcAddr;    }
+    public int    getDestAddr() { return destAddr;   }
+    public int    getTtl()      { return ttl;        }
+    public Object getPayload()  { return payload;    }
 
-    public int decrTTL()       { return --ttl; }
+    /**
+     * Decrements the TTL by 1.
+     * @return The updated TTL.
+     */
+    public int decrTTL()       { return --ttl;      }
 
     public void drop(FailureCondition fc) { monitor.dropped(this, fc); }
     public void arrive()                  { monitor.arrived(this);     }
@@ -45,10 +53,10 @@ public class Packet {
         s += "srcAddr:"  + this.getSrcAddr()  + ", ";
         s += "destAddr:" + this.getDestAddr() + ", ";
         s += "ttl:"      + this.getTtl()      + ", ";
-        s += "payload:"  + this.getPayload()  + ", ";
+        s += "payload:{"  + this.getPayload()  + "}, ";
         s += "route:[";
         for (Node node : this.getRoute()) {
-            s += "Node:{addr=" + node.getAddr() + ", ";
+            s += "Node:{addr=" + node.getAddr() + "}, ";
         }
         s += "]";
 

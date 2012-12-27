@@ -10,7 +10,7 @@ public class Main {
     public static final int PACKETS = 1;
 
     public static void main(String[] args) {
-        Topography t = new SimpleTopography(10, 20);
+        Topography t = new GeographicTopography(1000, 10, 100);
         Router     r = new RandomRouter();
         Network    n = new Network(t, r);
 
@@ -20,7 +20,7 @@ public class Main {
 
         System.out.println(n);
 
-        n.run(100);
+        n.run(100000);
     }
 
 }
