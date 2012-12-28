@@ -8,6 +8,7 @@ public class Link {
     private static final Random r = new Random();
 
     private final Node   dest;
+    private final int    distance;
     private final double uptime;
 
     /**
@@ -16,11 +17,15 @@ public class Link {
      * @param uptime Percent time link is active.
      * @throws IllegalArgumentException Thrown if the uptime is not in the range 0 to 1.
      */
-    public Link(Node dest, double uptime) throws IllegalArgumentException {
+    public Link(Node dest, int distance, double uptime) throws IllegalArgumentException {
         if (uptime > 1 || uptime < 0) throw new IllegalArgumentException("Uptime out of range 0 to 1");
-        this.dest   = dest;
-        this.uptime = uptime;
+        if (distance <= 0)            throw new IllegalArgumentException("Distance must be positive value");
+        this.dest     = dest;
+        this.distance = distance;
+        this.uptime   = uptime;
     }
+
+    public int getDistance() { return this.distance; }
 
     private boolean canTransmit() {
         return r.nextDouble() < uptime;
@@ -32,6 +37,7 @@ public class Link {
      * @param packet
      */
     public void transmit(Packet packet) {
+        packet.addToLinkRoute(this);
         if (canTransmit()) {
             dest.recv(packet);
         } else {
@@ -40,6 +46,6 @@ public class Link {
     }
 
     public String toString() {
-        return "Link:{dest=" + dest + ", uptime=" + uptime + "}";
+        return "Link:{dest=" + dest + ", distance=" + distance + ", uptime=" + uptime + "}";
     }
 }

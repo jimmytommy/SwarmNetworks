@@ -7,7 +7,8 @@ import java.util.Random;
  */
 public class TreeTopography implements Topography {
 
-    private static final double LINK_UPTIME = 0.8;
+    private static final double LINK_UPTIME = 1.0;
+    private static final int    LINK_DIST   = 1;
 
     private static final Random r = new Random();
 
@@ -32,7 +33,7 @@ public class TreeTopography implements Topography {
         while (i++ < nodes) {
             Node newNode = new Node(i);
             Node oldNode = this.nodes.get(r.nextInt(this.nodes.size()));
-            this.getLinks(oldNode).add(new Link(newNode, LINK_UPTIME));
+            this.getLinks(oldNode).add(new Link(newNode, LINK_DIST, LINK_UPTIME));
         }
     }
 

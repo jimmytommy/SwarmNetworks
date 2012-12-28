@@ -21,7 +21,8 @@ public class Packet {
     private Object payload;
 
     // Route packet took through the network
-    private List<Node> route = new ArrayList<Node>();
+    private List<Node> nodeRoute = new ArrayList<Node>();
+    private List<Link> linkRoute = new ArrayList<Link>();
 
     public Packet(int srcAddr, int destAddr, Object payload) {
         this.srcAddr  = srcAddr;
@@ -44,8 +45,11 @@ public class Packet {
     public void drop(FailureCondition fc) { monitor.dropped(this, fc); }
     public void arrive()                  { monitor.arrived(this);     }
 
-    public void addToRoute(Node node) { this.route.add(node); }
-    public Iterable<Node> getRoute()  { return this.route;    }
+    public void addToNodeRoute(Node node) { this.nodeRoute.add(node); }
+    public Iterable<Node> getNodeRoute()  { return this.nodeRoute;    }
+
+    public void addToLinkRoute(Link link) { this.linkRoute.add(link); }
+    public Iterable<Link> getLinkRoute()  { return this.linkRoute;    }
 
     public String toString() {
         String s = "Packet:{";
@@ -54,9 +58,14 @@ public class Packet {
         s += "destAddr:" + this.getDestAddr() + ", ";
         s += "ttl:"      + this.getTtl()      + ", ";
         s += "payload:{"  + this.getPayload()  + "}, ";
-        s += "route:[";
-        for (Node node : this.getRoute()) {
+        s += "nodeRoute:[";
+        for (Node node : this.getNodeRoute()) {
             s += "Node:{addr=" + node.getAddr() + "}, ";
+        }
+        s += "]";
+        s += "linkRoute:[";
+        for (Link link : this.getLinkRoute()) {
+            s += link;
         }
         s += "]";
 

@@ -5,6 +5,7 @@ import java.util.Random;
 public class SimpleTopography implements Topography {
 
     private static final double LINK_UPTIME = 0.8;
+    private static final int    LINK_DIST   = 1;
     private static final Random r = new Random();
 
     private List<Node>       nodes;
@@ -20,7 +21,7 @@ public class SimpleTopography implements Topography {
         while (links-- > 0) {
             Node src  = getRandomNode();
             Node dest = getRandomNode();
-            this.links.get(src.getAddr()).add(new Link(dest, LINK_UPTIME));
+            this.links.get(src.getAddr()).add(new Link(dest, LINK_DIST, LINK_UPTIME));
         }
     }
 

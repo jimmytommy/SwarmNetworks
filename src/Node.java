@@ -39,7 +39,7 @@ public class Node {
      */
     public void recv(Packet packet) {
         // Add this node to the packets route.
-        packet.addToRoute(this);
+        packet.addToNodeRoute(this);
 
         // If packet has arrived, signal monitor.
         if (packet.getDestAddr() == addr) {

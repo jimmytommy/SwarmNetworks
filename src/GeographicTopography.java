@@ -17,7 +17,8 @@ public class GeographicTopography implements Topography {
         }
     }
 
-    public static final double LINK_UPTIME = 1;
+    private static final double LINK_UPTIME = 1;
+    private static final int    LINK_DIST   = 1;
 
     public static Random r = new Random();
 
@@ -55,7 +56,7 @@ public class GeographicTopography implements Topography {
         for (int i = 0; i < nodes.size(); i++) {
             if (i != node.getAddr()) {
                 if (point.distanceTo(points.get(i)) < range) {
-                    links.add(new Link(nodes.get(i), LINK_UPTIME));
+                    links.add(new Link(nodes.get(i), LINK_DIST, LINK_UPTIME));
                 }
             }
         }
