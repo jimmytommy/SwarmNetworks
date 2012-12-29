@@ -15,10 +15,15 @@ public class GeographicTopography implements Topography {
             double dx = this.x - that.x, dy = this.y - that.y;
             return Math.sqrt(dx * dx + dy * dy);
         }
+
+        public String toString() {
+            return "Point:{x=" + x + ", y=" + y + "}";
+        }
     }
 
     private static final double LINK_UPTIME = 1;
     private static final int    LINK_DIST   = 1;
+    private static final int    STEPS       = 5;
 
     public static Random r = new Random();
 
@@ -72,7 +77,7 @@ public class GeographicTopography implements Topography {
      * Everyone takes a random walk of a certain number of steps.
      */
     public void updateTypography() {
-        for (int step = 0; step < 5; step++) {
+        for (int step = 0; step < STEPS; step++) {
             for (Point p : points) {
                 switch (r.nextInt(4)) {
                     case 0:
@@ -86,5 +91,15 @@ public class GeographicTopography implements Topography {
                 }
             }
         }
+    }
+
+    public String toString() {
+        String s = "GeographicTopography:{range=" + range + ", size=" + size + ", nodes=[";
+
+        for (int i = 0; i < nodes.size(); i++) {
+            s += "(" + nodes.get(i) + ", " + points.get(i) + "), ";
+        }
+
+        return s + "]}";
     }
 }

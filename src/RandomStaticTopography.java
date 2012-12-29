@@ -2,23 +2,24 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class SimpleTopography implements Topography {
+public class RandomStaticTopography implements Topography {
 
-    private static final double LINK_UPTIME = 0.8;
+    private static final double LINK_UPTIME = 1.0;
     private static final int    LINK_DIST   = 1;
+
     private static final Random r = new Random();
 
     private List<Node>       nodes;
     private List<List<Link>> links;
 
-    public SimpleTopography(int nodes, int links) {
+    public RandomStaticTopography(int nodes, int links) {
         this.nodes = new ArrayList<Node>(nodes);
         for (int i = 0; i < nodes; i++) this.nodes.add(new Node(i));
 
         this.links = new ArrayList<List<Link>>(nodes);
         for (int i = 0; i < nodes; i++) this.links.add(new ArrayList<Link>());
 
-        while (links-- > 0) {
+        for (int i = 0; i < links; i++) {
             Node src  = getRandomNode();
             Node dest = getRandomNode();
             this.links.get(src.getAddr()).add(new Link(dest, LINK_DIST, LINK_UPTIME));

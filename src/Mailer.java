@@ -1,5 +1,5 @@
 public interface Mailer {
 
-    public void sendNext();
+    public void mail(Network network, int packets);
 
 }

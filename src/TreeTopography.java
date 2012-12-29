@@ -33,13 +33,17 @@ public class TreeTopography implements Topography {
         while (i++ < nodes) {
             Node newNode = new Node(i);
             Node oldNode = this.nodes.get(r.nextInt(this.nodes.size()));
+
             this.getLinks(oldNode).add(new Link(newNode, LINK_DIST, LINK_UPTIME));
+            this.getLinks(newNode).add(new Link(oldNode, LINK_DIST, LINK_UPTIME));
+
+            this.nodes.add(newNode);
         }
     }
 
-    public Node getRoot()                 { return root;                               }
+    public Node       getRoot()           { return root;                               }
     public List<Node> getNodes()          { return nodes;                              }
     public List<Link> getLinks(Node node) { return links.get(node.getAddr());          }
-    public Node getRandomNode()           { return nodes.get(r.nextInt(nodes.size())); }
-    public void updateTypography()        { /* Static topography so no migration */    }
+    public Node       getRandomNode()     { return nodes.get(r.nextInt(nodes.size())); }
+    public void       updateTypography()  { /* Static topography so no migration */    }
 }

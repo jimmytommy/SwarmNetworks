@@ -7,16 +7,14 @@
  */
 public class Main {
 
-    public static final int PACKETS = 1;
-
     public static void main(String[] args) {
-        Topography t = new GeographicTopography(1000, 10, 100);
+        Topography t = new GeographicTopography(10, 2, 10);
         Router     r = new RandomRouter();
-        Network    n = new Network(t, r);
+        Mailer     m = new SimpleMailer(t.getRandomNode(), t.getRandomNode());
 
-        for (int i = 0; i < PACKETS; i++) {
-            t.getRandomNode().send(t.getRandomNode(), "Test Packet " + i);
-        }
+        Network    n = new Network(t, r, m);
+
+        n.registerMonitor(new PrintMonitor());
 
         System.out.println(n);
 

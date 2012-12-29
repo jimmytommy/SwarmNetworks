@@ -14,6 +14,11 @@ public class Node {
         this.addr = addr;
     }
 
+    /**
+     * Getter method for the address of the Node.  Address is analogous to IP address.
+     * Address must be a positive integer.
+     * @return The address of the node.
+     */
     public int getAddr() { return addr; }
 
     /**
@@ -21,9 +26,10 @@ public class Node {
      * @param dest Destination node on the network.
      * @param payload Arbitrary payload may be supplied to identify the packet.
      *                If no payload desired, supply null.
+     * @param monitor The monitor to notify when packet dropped/arrived.
      */
-    public void send(Node dest, Object payload) {
-        Packet packet = new Packet(this.addr, dest.addr, payload);
+    public void send(Node dest, Object payload, Monitor monitor) {
+        Packet packet = new Packet(this.addr, dest.addr, payload, monitor);
         recv(packet);
     }
 
@@ -42,7 +48,7 @@ public class Node {
         packet.addToNodeRoute(this);
 
         // If packet has arrived, signal monitor.
-        if (packet.getDestAddr() == addr) {
+        if (packet.getDstAddr() == addr) {
             packet.arrive();
             return;
         }
