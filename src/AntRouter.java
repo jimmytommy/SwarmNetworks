@@ -7,10 +7,10 @@ import java.util.Random;
 public class AntRouter implements Router, Monitor {
 
     private static final Random r = new Random();
-    private static final double weightPh = .5; //weight factor for pheromone trails
-    private static final double weightDist = .5; //weight factor for link distances
-    private static final double addPh = 1; //weights how much pheromone is added to trail
-    private static final double evapRate = .1; //evaporation rate of pheromone trails
+    private static final double weightPh = 100; //weight factor for pheromone trails
+    private static final double weightDist = .1; //weight factor for link distances
+    private static final double addPh = 10; //weights how much pheromone is added to trail
+    private static final double evapRate = 0; //evaporation rate of pheromone trails
 
     private Topography t = null;
     private Hashtable<Link, Double> pheromones = null;
@@ -67,6 +67,7 @@ public class AntRouter implements Router, Monitor {
 
     @Override
     public void dropped(Packet packet, FailureCondition fc) {
+        System.out.println("Dropped: " + packet + " - " + fc);
         //Ignore dropped packets
     }
 
@@ -74,7 +75,6 @@ public class AntRouter implements Router, Monitor {
     //If arrived, lay down a pheromone path
     public void arrived(Packet packet) {
 
-        System.out.println("arrived!!");
         double dist = 0;
         for (Link l : packet.getLinkRoute())
         {
@@ -85,11 +85,15 @@ public class AntRouter implements Router, Monitor {
 
         for (Link l : packet.getLinkRoute())
         {
-            double ph = pheromones.get(l);
+            double ph = (pheromones.containsKey(l) ? pheromones.get(l) : 1);
             ph += delta;
 
             pheromones.put(l, ph);
         }
 
+        System.out.print("Arrived: Path Length: " + dist + ", " + packet.getPayload().toString() + ", Route: {");
+        for (Node n : packet.getNodeRoute())
+            System.out.print(n.getAddr() + ", ");
+        System.out.println();
     }
 }
