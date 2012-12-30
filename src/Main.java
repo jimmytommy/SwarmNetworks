@@ -9,12 +9,13 @@ public class Main {
 
     public static void main(String[] args) {
         Topography t = new GeographicTopography(10, 2, 10);
-        Router     r = new RandomRouter();
+        AntRouter  r = new AntRouter();
         Mailer     m = new SimpleMailer(t.getRandomNode(), t.getRandomNode());
 
         Network    n = new Network(t, r, m);
 
-        n.registerMonitor(new PrintMonitor());
+        //n.registerMonitor(new PrintMonitor());
+        n.registerMonitor(r);
 
         System.out.println(n);
 

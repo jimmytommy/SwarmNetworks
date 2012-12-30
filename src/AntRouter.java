@@ -14,6 +14,8 @@ public class AntRouter implements Router, Monitor {
 
     private Topography t = null;
     private Hashtable<Link, Double> pheromones = null;
+    private int arrivedNum = 0;
+    private double avgPathLength = 0;
 
 
     public void setTypography(Topography t) {
@@ -67,7 +69,7 @@ public class AntRouter implements Router, Monitor {
 
     @Override
     public void dropped(Packet packet, FailureCondition fc) {
-        System.out.println("Dropped: " + packet + " - " + fc);
+        //System.out.println("Dropped: " + packet + " - " + fc);
         //Ignore dropped packets
     }
 
@@ -91,9 +93,18 @@ public class AntRouter implements Router, Monitor {
             pheromones.put(l, ph);
         }
 
-        System.out.print("Arrived: Path Length: " + dist + ", " + packet.getPayload().toString() + ", Route: {");
-        for (Node n : packet.getNodeRoute())
-            System.out.print(n.getAddr() + ", ");
-        System.out.println();
+        int printNum = 1000;
+        arrivedNum++;
+        avgPathLength += dist;
+        if (arrivedNum % printNum == 0)
+        {
+            System.out.println((arrivedNum - printNum) + "-" + arrivedNum + " Average = " + (avgPathLength / (double) printNum));
+            avgPathLength = 0;
+        }
+
+        //System.out.print("Arrived: Path Length: " + dist + ", " + packet.getPayload().toString() + ", Route: {");
+        //for (Node n : packet.getNodeRoute())
+        //    System.out.print(n.getAddr() + ", ");
+        //System.out.println();
     }
 }
