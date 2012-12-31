@@ -30,12 +30,12 @@ public class TreeTopography implements Topography {
         this.root = new Node(i);
         this.nodes.add(root);
 
-        while (i++ < nodes) {
+        while (++i < nodes) {
             Node newNode = new Node(i);
             Node oldNode = this.nodes.get(r.nextInt(this.nodes.size()));
 
             this.getLinks(oldNode).add(new Link(newNode, LINK_DIST, LINK_UPTIME));
-            this.getLinks(newNode).add(new Link(oldNode, LINK_DIST, LINK_UPTIME));
+            // this.getLinks(newNode).add(new Link(oldNode, LINK_DIST, LINK_UPTIME));
 
             this.nodes.add(newNode);
         }
@@ -46,4 +46,28 @@ public class TreeTopography implements Topography {
     public List<Link> getLinks(Node node) { return links.get(node.getAddr());          }
     public Node       getRandomNode()     { return nodes.get(r.nextInt(nodes.size())); }
     public void       updateTypography()  { /* Static topography so no migration */    }
+
+    public String print(Node root) {
+        String s = "N" + root.getAddr();
+
+        if (getLinks(root).size() != 0) {
+            s += "{";
+
+            for (Link l : getLinks(root)) {
+                s += print(l.getDst()) + ", ";
+            }
+
+            s += "}";
+        }
+
+        return s;
+    }
+
+    public String toString() {
+        String s = "TreeTopography:{";
+
+        s += print(this.root);
+
+        return s + "}";
+    }
 }

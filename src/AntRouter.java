@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Random;
@@ -6,29 +5,31 @@ import java.util.Random;
 //algorithm taken from http://en.wikipedia.org/wiki/Ant_colony_optimization_algorithms
 public class AntRouter implements Router, Monitor {
 
-    private static final Random r = new Random();
-    private static final double weightPh = 3; //weight factor for pheromone trails - should be >= 0
-    private static final double weightDist = 1; //weight factor for link distances - should be >= 1
-    private static final double addPh = 1; //weights how much pheromone is added to trail
-    private static final double evapRate = .4; //evaporation rate of pheromone trails - should be in [0,1)
+    private static final Random r          = new Random();
+    private static final double weightPh   = 3.0; // weight factor for pheromone trails - should be >= 0
+    private static final double weightDist = 1.0; // weight factor for link distances - should be >= 1
+    private static final double addPh      = 1.0; // weights how much pheromone is added to trail
+    private static final double evapRate   = 0.4; // evaporation rate of pheromone trails - should be in [0,1)
 
-    private Topography t = null;
+    private Topography t                       = null;
     private Hashtable<Link, Double> pheromones = null;
-    private int arrivedNum = 0;
-    private int droppedNum = 0;
+
+    private int    arrivedNum        = 0;
+    private int    droppedNum        = 0;
     private double partAvgPathLength = 0;
-    private double totPathLength = 0;
-    private double bestPathLength = Double.MAX_VALUE;
+    private double totPathLength     = 0;
+    private double bestPathLength    = Double.MAX_VALUE;
 
 
     public void setTypography(Topography t) {
-        this.t = t;
+        this.t          = t;
         this.pheromones = new Hashtable<Link, Double>();
     }
 
-    //edge selection
+    // edge selection
     public Link getNextStep(Node src, Packet packet) throws RuntimeException {
         if (t == null) new RuntimeException("Typography not set");
+
         List<Link> links = t.getLinks(src);
         if (links.size() <= 0) return null;
 
@@ -38,10 +39,12 @@ public class AntRouter implements Router, Monitor {
         int index = 0;
         for (Link l : links)
         {
-            double ph = (pheromones.containsKey(l) ? pheromones.get(l) : 1);
+            double ph   = (pheromones.containsKey(l) ? pheromones.get(l) : 1);
             double dist = l.getDistance();
-            double w = Math.pow(ph, weightPh)* Math.pow(dist, weightDist);
+            double w    = Math.pow(ph, weightPh)* Math.pow(dist, weightDist);
+
             weights[index++] = w;
+
             sum += w;
         }
 
@@ -74,30 +77,26 @@ public class AntRouter implements Router, Monitor {
         System.out.println("Average path length: " + totPathLength / arrivedNum);
     }
 
-    @Override
     public void dropped(Packet packet, FailureCondition fc) {
         droppedNum++;
         System.out.println("Dropped: " + " - " + fc);
         //Ignore dropped packets
     }
 
-    @Override
     //If arrived, lay down a pheromone path
     public void arrived(Packet packet) {
-
         double dist = 0;
         for (Link l : packet.getLinkRoute())
         {
             dist += l.getDistance();
         }
 
-        double delta = (addPh / dist);
+        double delta = addPh / dist;
 
         for (Link l : packet.getLinkRoute())
         {
             double ph = (pheromones.containsKey(l) ? pheromones.get(l) : 1);
             ph += delta;
-
             pheromones.put(l, ph);
         }
 

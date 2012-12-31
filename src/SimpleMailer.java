@@ -9,7 +9,11 @@ public class SimpleMailer implements Mailer {
     }
 
     public void mail(Network network, int packets) {
-        while (packets-- > 0) network.sendPacket(src, dst, "Packet" + i++);
+        while (packets-- > 0) network.sendPacket(src, dst, "Packet " + i++);
+    }
+
+    public String toString() {
+        return "SimpleMailer:{src=" + src + ", dst=" + dst + ", i=" + i + "}";
     }
 
 }

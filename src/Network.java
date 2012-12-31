@@ -59,6 +59,6 @@ public class Network {
     }
 
     public String toString() {
-        return "Network:{typography=" + t +", router=" + r + "}";
+        return "Network:{typography=" + t +", router=" + r + ", mailer=" + m + "}";
     }
 }
