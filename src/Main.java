@@ -8,7 +8,7 @@
 public class Main {
 
     public static void main(String[] args) {
-        Topography t = new GeographicTopography(10, 2, 10);
+        Topography t = new RandomStaticTopography(100, 1000);
         AntRouter  r = new AntRouter();
         Mailer     m = new SimpleMailer(t.getRandomNode(), t.getRandomNode());
 
@@ -19,7 +19,9 @@ public class Main {
 
         System.out.println(n);
 
-        n.run(100000);
+        n.run(10000);
+
+        r.getStats();
     }
 
 }

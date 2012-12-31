@@ -7,15 +7,18 @@ import java.util.Random;
 public class AntRouter implements Router, Monitor {
 
     private static final Random r = new Random();
-    private static final double weightPh = 100; //weight factor for pheromone trails
-    private static final double weightDist = .1; //weight factor for link distances
-    private static final double addPh = 10; //weights how much pheromone is added to trail
-    private static final double evapRate = 0; //evaporation rate of pheromone trails
+    private static final double weightPh = 3; //weight factor for pheromone trails - should be >= 0
+    private static final double weightDist = 1; //weight factor for link distances - should be >= 1
+    private static final double addPh = 1; //weights how much pheromone is added to trail
+    private static final double evapRate = .4; //evaporation rate of pheromone trails - should be in [0,1)
 
     private Topography t = null;
     private Hashtable<Link, Double> pheromones = null;
     private int arrivedNum = 0;
-    private double avgPathLength = 0;
+    private int droppedNum = 0;
+    private double partAvgPathLength = 0;
+    private double totPathLength = 0;
+    private double bestPathLength = Double.MAX_VALUE;
 
 
     public void setTypography(Topography t) {
@@ -63,13 +66,18 @@ public class AntRouter implements Router, Monitor {
         }
     }
 
-    public String toString() {
-        return "Ant Router:{typography=" + t + "}";
+    public void getStats()
+    {
+        System.out.println("----------------Ant Router Performance----------------------------");
+        System.out.println("Packets Arrived: " + arrivedNum + "/" + (arrivedNum + droppedNum) + " total");
+        System.out.println("Best found path: " + (bestPathLength != Double.MAX_VALUE ? bestPathLength : "None found"));
+        System.out.println("Average path length: " + totPathLength / arrivedNum);
     }
 
     @Override
     public void dropped(Packet packet, FailureCondition fc) {
-        //System.out.println("Dropped: " + packet + " - " + fc);
+        droppedNum++;
+        System.out.println("Dropped: " + " - " + fc);
         //Ignore dropped packets
     }
 
@@ -93,18 +101,24 @@ public class AntRouter implements Router, Monitor {
             pheromones.put(l, ph);
         }
 
-        int printNum = 1000;
+        int printNum = 1;
         arrivedNum++;
-        avgPathLength += dist;
+        partAvgPathLength += dist;
+        totPathLength += dist;
+        if (dist < bestPathLength) bestPathLength = dist;
         if (arrivedNum % printNum == 0)
         {
-            System.out.println((arrivedNum - printNum) + "-" + arrivedNum + " Average = " + (avgPathLength / (double) printNum));
-            avgPathLength = 0;
+            System.out.println((arrivedNum - printNum) + "-" + arrivedNum + " Average = " + (partAvgPathLength / (double) printNum));
+            partAvgPathLength = 0;
         }
 
         //System.out.print("Arrived: Path Length: " + dist + ", " + packet.getPayload().toString() + ", Route: {");
         //for (Node n : packet.getNodeRoute())
         //    System.out.print(n.getAddr() + ", ");
         //System.out.println();
+    }
+
+    public String toString() {
+        return "Ant Router:{typography=" + t + "}";
     }
 }
