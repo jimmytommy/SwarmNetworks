@@ -46,10 +46,6 @@ public class Link {
         }
     }
 
-    public Node getDest() {
-        return this.dest;
-    }
-
     public String toString() {
         return "Link:{dst=" + dst + ", distance=" + distance + ", uptime=" + uptime + "}";
     }
