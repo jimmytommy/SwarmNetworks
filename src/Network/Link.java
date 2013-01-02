@@ -1,3 +1,7 @@
+package Network;
+
+import Monitors.FailureCondition;
+
 import java.util.Random;
 
 /**

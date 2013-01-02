@@ -1,3 +1,8 @@
+package Network;
+
+import Monitors.FailureCondition;
+import Monitors.Monitor;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,10 +52,10 @@ public class Packet {
     public void arrive()                  { monitor.arrived(this);     }
 
     public void addToNodeRoute(Node node) { this.nodeRoute.add(node);  }
-    public Iterable<Node> getNodeRoute()  { return this.nodeRoute;     }
+    public List<Node> getNodeRoute()      { return this.nodeRoute;     }
 
     public void addToLinkRoute(Link link) { this.linkRoute.add(link);  }
-    public Iterable<Link> getLinkRoute()  { return this.linkRoute;     }
+    public List<Link> getLinkRoute()      { return this.linkRoute;     }
 
     public String toString() {
         String s = "Packet:{";

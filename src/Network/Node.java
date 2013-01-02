@@ -2,6 +2,13 @@
  * Node class used to represent users on a ad-hoc network.
  * These users can both route and send traffic.
  */
+
+package Network;
+
+import Monitors.FailureCondition;
+import Monitors.Monitor;
+import util.BoundedQueue;
+
 public class Node {
 
     private static final int QUEUE_SIZE = 10;
@@ -28,8 +35,8 @@ public class Node {
      *                If no payload desired, supply null.
      * @param monitor The monitor to notify when packet dropped/arrived.
      */
-    public void send(Node dest, Object payload, Monitor monitor) {
-        Packet packet = new Packet(this.addr, dest.addr, payload, monitor);
+    public void send(int dstAddr, Object payload, Monitor monitor) {
+        Packet packet = new Packet(this.addr, dstAddr, payload, monitor);
         recv(packet);
     }
 

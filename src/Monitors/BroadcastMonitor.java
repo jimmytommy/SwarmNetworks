@@ -1,5 +1,9 @@
+package Monitors;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import Network.Packet;
 
 public class BroadcastMonitor implements Monitor {
 
