@@ -8,7 +8,7 @@ public class PrintMonitor implements Monitor {
     }
 
     public void arrived(Packet packet) {
-        // System.out.println("Arrived: " + packet);
-
+        System.out.println("Arrived: " + packet);
+        System.out.println(packet.getLinkRoute().size());
     }
 }

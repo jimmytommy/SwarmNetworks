@@ -1,15 +1,10 @@
 package Network;
 
-import Monitors.FailureCondition;
-
-import java.util.Random;
-
 /**
  * Link abstraction that represents any type of link connection on a computer network.
  * Links are unidirectional.
  */
 public class Link {
-    private static final Random r = new Random();
 
     private final Node   src, dst;
     private final int    distance;
@@ -32,15 +27,17 @@ public class Link {
 
         Link link = (Link) o;
 
-        if (!dst.equals(link.dst)) return false;
-        if (!src.equals(link.src)) return false;
+        if (distance != link.distance) return false;
+        if (dst != null ? !dst.equals(link.dst) : link.dst != null) return false;
+        if (src != null ? !src.equals(link.src) : link.src != null) return false;
 
         return true;
     }
 
     public int hashCode() {
-        int result = src.hashCode();
-        result = 31 * result + dst.hashCode();
+        int result = src != null ? src.hashCode() : 0;
+        result = 31 * result + (dst != null ? dst.hashCode() : 0);
+        result = 31 * result + distance;
         return result;
     }
 

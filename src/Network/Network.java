@@ -54,8 +54,18 @@ public class Network {
                 Packet packet = src.nextToSend();
                 if (packet != null) {
                     Node dst = r.getNextStep(src, packet);
-                    if (!t.isConnected(src, dst)) packet.drop(FailureCondition.ROUTING_FAILURE);
-                    if (!t.canTransmit(src, dst)) packet.drop(FailureCondition.LINK_FAILURE);
+                    if (dst == null) {
+                        packet.drop(FailureCondition.ROUTING_FAILURE);
+                        break;
+                    }
+                    if (!t.isConnected(src, dst)) {
+                        packet.drop(FailureCondition.OBSOLETE_ROUTE);
+                        break;
+                    }
+                    if (!t.canTransmit(src, dst)) {
+                        packet.drop(FailureCondition.LINK_FAILURE);
+                        break;
+                    }
                     dst.recv(packet);
                     packet.addToLinkRoute(t.getLink(src, dst));
                 }

@@ -7,28 +7,26 @@ import Typographies.*;
 public class Main {
 
     public static void main(String[] args) {
-        /*TreeTopography tt = new TreeTopography(20);
-        AntRouter      ar = new AntRouter();
+        /*
+        TreeTopography t = new TreeTopography(20);
+        AntRouter      r = new AntRouter();
+        Mailer         m = new SimpleMailer(t.getRoot(), t.getRandomNode());
 
-        Topography t = tt;
-        Router     r = ar;
-        Mailer     m = new SimpleMailer(tt.getRoot(), t.getRandomNode());
+        Network n = new Network(t, r, m);
 
-        Network    n = new Network(t, r, m);
-
-        n.registerMonitor(ar);
+        n.registerMonitor(r);
         n.registerMonitor(new PrintMonitor());
 
         System.out.println(n);
 
         n.run(10000);
 
-        ar.getStats();*/
+        r.getStats();
+        */
 
-
-        Topography t = new TreeTopography(8);
-        Router     r = new BFRouter();
-        Mailer     m = new SimpleMailer(t.getRandomNode(), t.getRandomNode());
+        TreeTopography t = new TreeTopography(8);
+        Router         r = new BFRouter();
+        Mailer         m = new SimpleMailer(t.getRoot(), t.getRandomNode());
 
         Network    n = new Network(t, r, m);
 
@@ -36,7 +34,11 @@ public class Main {
 
         System.out.println(n);
 
-        n.run(5);
+        for (int i = 0; i < 100; i++) {
+            r.updateRouter();
+        }
+
+        n.run(500);
     }
 
 }

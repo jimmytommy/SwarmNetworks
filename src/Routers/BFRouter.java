@@ -24,10 +24,10 @@ public class BFRouter implements Router {
 		this.t = t;
 	}
 
-    public Link getNextStep(Node src, Packet packet) throws RuntimeException {
+    public Node getNextStep(Node src, Packet packet) throws RuntimeException {
         if (t == null) new RuntimeException("Typography not set");
     	Node n = intToNode.get(packet.getDstAddr());
-    	return pathtables[nodeToInt.get(src)].via[nodeToInt.get(n)];
+    	return pathtables[nodeToInt.get(src)].via[nodeToInt.get(n)].getDst();
 
     }
 
@@ -96,7 +96,7 @@ public class BFRouter implements Router {
     		if (altered) {
     			for (Link link : t.getLinks(src)) {
     				if (!changedNodes.contains(link.getDst())) {
-    					changedNodes.add(link.getDest());
+    					changedNodes.add(link.getDst());
     				}
     			}
     		}
@@ -113,7 +113,7 @@ public class BFRouter implements Router {
 					System.out.println("-");
 				}
 				else {
-					System.out.println(nodeToInt.get(pathtables[i].via[j].getDest()));
+					System.out.println(nodeToInt.get(pathtables[i].via[j].getDst()));
 				}
     		}
     		System.out.println();

@@ -4,5 +4,5 @@ public enum FailureCondition {
     LINK_FAILURE,
     TTL_EXPIRATION,
     QUEUE_OVERFLOW,
-    ROUTING_FAILURE,
+    ROUTING_FAILURE, OBSOLETE_ROUTE,
 }
