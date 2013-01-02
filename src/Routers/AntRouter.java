@@ -7,9 +7,7 @@ import Network.Node;
 import Network.Packet;
 import Typographies.Topography;
 
-import java.util.Hashtable;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 //algorithm taken from http://en.wikipedia.org/wiki/Ant_colony_optimization_algorithms
 public class AntRouter implements Router, Monitor {
@@ -36,10 +34,10 @@ public class AntRouter implements Router, Monitor {
     }
 
     // edge selection
-    public Link getNextStep(Node src, Packet packet) throws RuntimeException {
+    public Node getNextStep(Node src, Packet packet) throws RuntimeException {
         if (t == null) new RuntimeException("Typography not set");
 
-        List<Link> links = t.getLinks(src);
+        List<Link> links = new ArrayList<Link>(t.getLinks(src));
         if (links.size() <= 0) return null;
 
         double[] weights = new double[links.size()];
@@ -63,7 +61,7 @@ public class AntRouter implements Router, Monitor {
         for (int i = 0; i < weights.length; i++)
         {
             tot += weights[i];
-            if (rand < tot) return links.get(i);
+            if (rand < tot) return links.get(i).getDst();
         }
 
         return null;

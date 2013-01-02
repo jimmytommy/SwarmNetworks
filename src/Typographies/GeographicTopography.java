@@ -70,6 +70,11 @@ public class GeographicTopography implements Topography {
         return isConnected(src, dst) && r.nextDouble() < LINK_UPTIME;
     }
 
+    public Link getLink(Node src, Node dst) {
+        if (isConnected(src, dst)) return new Link(src, dst, LINK_DIST);
+        else return null;
+    }
+
     /**
      * Everyone takes a random walk of a certain number of steps.
      */

@@ -14,6 +14,8 @@ public interface Topography {
 
     public boolean isConnected(Node src, Node dst);
 
+    public Link getLink(Node src, Node dst);
+
     public boolean canTransmit(Node src, Node dst);
 
     public void updateTypography();

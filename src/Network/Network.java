@@ -7,8 +7,10 @@ import Monitors.Monitor;
 import Routers.Router;
 import Typographies.Topography;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 public class Network {
 
@@ -46,15 +48,16 @@ public class Network {
             if (clock % ROUTER_UPDATE     == 0) r.updateRouter();
             if (clock % SEND_MAIL         == 0) m.mail(this, PACKETS_PER_MAIL);
 
-            List<Node> nodes = t.getNodes();
+            List<Node> nodes = new ArrayList<Node>(t.getNodes());
             Collections.shuffle(nodes);
-            for (Node node : nodes) {
-                Packet packet = node.nextToSend();
+            for (Node src : nodes) {
+                Packet packet = src.nextToSend();
                 if (packet != null) {
-                    Node dst = r.getNextStep(node, packet);
-                    if (!t.isConnected(node, dst)) packet.drop(FailureCondition.ROUTING_FAILURE);
-                    if (!t.canTransmit(node, dst)) packet.drop(FailureCondition.LINK_FAILURE);
+                    Node dst = r.getNextStep(src, packet);
+                    if (!t.isConnected(src, dst)) packet.drop(FailureCondition.ROUTING_FAILURE);
+                    if (!t.canTransmit(src, dst)) packet.drop(FailureCondition.LINK_FAILURE);
                     dst.recv(packet);
+                    packet.addToLinkRoute(t.getLink(src, dst));
                 }
             }
 

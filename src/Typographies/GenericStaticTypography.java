@@ -35,6 +35,10 @@ public class GenericStaticTypography implements Topography {
         return map.get(src).containsKey(dst);
     }
 
+    public Link getLink(Node src, Node dst) {
+        return map.get(src).get(dst);
+    }
+
     public boolean canTransmit(Node src, Node dst) {
         return isConnected(src, dst) && r.nextDouble() < LINK_UPTIME;
     }

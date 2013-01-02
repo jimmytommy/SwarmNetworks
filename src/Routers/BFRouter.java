@@ -96,7 +96,7 @@ public class BFRouter implements Router {
     		if (altered) {
     			for (Link link : t.getLinks(src)) {
     				if (!changedNodes.contains(link.getDst())) {
-    					changedNodes.add(link.getDst());
+    					changedNodes.add(link.getDest());
     				}
     			}
     		}
@@ -113,7 +113,7 @@ public class BFRouter implements Router {
 					System.out.println("-");
 				}
 				else {
-					System.out.println(nodeToInt.get(pathtables[i].via[j].getDst()));
+					System.out.println(nodeToInt.get(pathtables[i].via[j].getDest()));
 				}
     		}
     		System.out.println();
