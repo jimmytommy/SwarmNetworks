@@ -18,8 +18,11 @@ public class BFRouter implements Router {
 	}
 
     public Link getNextStep(Node src, Packet packet) throws RuntimeException {
+        System.out.println("here");
         if (t == null) new RuntimeException("Typography not set");
     	Node n = intToNode.get(packet.getDstAddr());
+        System.out.println("The address is " + nodeToInt.get(n) + " the source is " + nodeToInt.get(src));
+        System.out.println("link " + pathtables[nodeToInt.get(src)].via[nodeToInt.get(n)]);
     	return pathtables[nodeToInt.get(src)].via[nodeToInt.get(n)];
 
     }
@@ -75,9 +78,9 @@ public class BFRouter implements Router {
     			int best_cost = pathtables[src_index].costs[dest_index];
     			Link best_path = pathtables[src_index].via[dest_index];
     			for (Link link : t.getLinks(src)) {
-    				int link_node_index = nodeToInt.get(link.getDest());
+    				int link_node_index = nodeToInt.get(link.getDst());
     				int cost = link.getDistance() + pathtables[link_node_index].costs[dest_index];
-    				if (cost < best_cost && pathtables[link_node_index].via[dest_index] != null) {
+    				if (cost < best_cost && cost > 0) /*&& pathtables[link_node_index].via[dest_index] != null*/ {
     					best_cost = cost;
     					best_path = link;
     					altered = true;
@@ -88,8 +91,8 @@ public class BFRouter implements Router {
     		}
     		if (altered) {
     			for (Link link : t.getLinks(src)) {
-    				if (!changedNodes.contains(link.getDest())) {
-    					changedNodes.add(link.getDest());
+    				if (!changedNodes.contains(link.getDst())) {
+    					changedNodes.add(link.getDst());
     				}
     			}
     		}
@@ -106,7 +109,7 @@ public class BFRouter implements Router {
 					System.out.println("-");
 				}
 				else {
-					System.out.println(nodeToInt.get(pathtables[i].via[j].getDest()));
+					System.out.println(nodeToInt.get(pathtables[i].via[j].getDst()));
 				}
     		}
     		System.out.println();

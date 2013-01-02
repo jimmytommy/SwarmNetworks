@@ -21,7 +21,7 @@ public class Main {
         ar.getStats();*/
 
 
-        Topography t = new TreeTopography(8);
+        Topography t = new GeographicTopography(10, 5, 20);
         Router     r = new BFRouter();
         Mailer     m = new SimpleMailer(t.getRandomNode(), t.getRandomNode());
 
@@ -31,7 +31,7 @@ public class Main {
 
         System.out.println(n);
 
-        n.run(5);
+        n.run(70);
     }
 
 }
