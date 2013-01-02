@@ -3,9 +3,7 @@ package Typographies;
 import Network.Link;
 import Network.Node;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class GeographicTopography implements Topography {
     private class Point {
@@ -32,50 +30,44 @@ public class GeographicTopography implements Topography {
 
     public static Random r = new Random();
 
-    public double      range;
-    public int         size;
-    public List<Node>  nodes;
-    public List<Point> points;
+    public double range;
+    public int    size;
+
+    public HashMap<Node, Point> map = new HashMap<Node, Point>();
 
     public GeographicTopography(int nodes, double range, int size) {
         this.range = range;
         this.size  = size;
 
-        this.nodes  = new ArrayList<Node>(nodes);
-        this.points = new ArrayList<Point>(nodes);
-
         for (int i = 0; i < nodes; i++) {
-            this.nodes.add(new Node(i));
-            this.points.add(new Point(r.nextInt(size), r.nextInt(size)));
+            this.map.put(new Node(i), new Point(r.nextInt(size), r.nextInt(size)));
         }
     }
 
-    public List<Node> getNodes() {
-        return nodes;
+    public Set<Node> getNodes() {
+        return map.keySet();
     }
 
-    /**
-     * Returns all the nodes that are within transmission distance.
-     * @param node
-     * @return
-     */
-    public List<Link> getLinks(Node node) {
-        Point point = points.get(node.getAddr());
+    private Point getPoint(Node node) {
+        return map.get(node);
+    }
 
+    public Collection<Link> getLinks(Node src) {
         List<Link> links = new ArrayList<Link>();
-        for (int i = 0; i < nodes.size(); i++) {
-            if (i != node.getAddr()) {
-                if (point.distanceTo(points.get(i)) < range) {
-                    links.add(new Link(nodes.get(i), LINK_DIST, LINK_UPTIME));
-                }
-            }
+        for (Node dst : getNodes()) {
+            if (isConnected(src, dst)) links.add(new Link(src, dst, LINK_DIST));
         }
-
         return links;
     }
 
-    public Node getRandomNode() {
-        return nodes.get(r.nextInt(nodes.size()));
+    public boolean isConnected(Node src, Node dst) {
+        if (src == dst) return false;
+        if (getPoint(src).distanceTo(getPoint(dst)) > range) return false;
+        return true;
+    }
+
+    public boolean canTransmit(Node src, Node dst) {
+        return isConnected(src, dst) && r.nextDouble() < LINK_UPTIME;
     }
 
     /**
@@ -83,7 +75,7 @@ public class GeographicTopography implements Topography {
      */
     public void updateTypography() {
         for (int step = 0; step < STEPS; step++) {
-            for (Point p : points) {
+            for (Point p : map.values()) {
                 switch (r.nextInt(4)) {
                     case 0:
                         if (p.x < size-1) p.x++;
@@ -101,8 +93,8 @@ public class GeographicTopography implements Topography {
     public String toString() {
         String s = "GeographicTopography:{range=" + range + ", size=" + size + ", nodes=[";
 
-        for (int i = 0; i < nodes.size(); i++) {
-            s += "(" + nodes.get(i) + ", " + points.get(i) + "), ";
+        for (Map.Entry<Node, Point> entry : map.entrySet()) {
+            s += "(" + entry.getKey() + ", " + entry.getValue() + "), ";
         }
 
         return s + "]}";

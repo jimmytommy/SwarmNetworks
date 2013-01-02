@@ -14,7 +14,7 @@ public class SimpleMailer implements Mailer {
     }
 
     public void mail(Network network, int packets) {
-        while (packets-- > 0) network.sendPacket(src, dst.getAddr(), "Packet " + i++);
+        while (packets-- > 0) network.sendPacket(src, dst.getAddr(), "Packet " + i++ + "from " + src + " to " + dst);
     }
 
     public String toString() {

@@ -7,7 +7,6 @@ import Network.*;
 public class LoadBalancing extends GenericStaticTypography implements Mailer, Monitor {
 
     private static final int    LINK_DISTANCE  = 1;
-    private static final double LINK_UPTIME    = 1.0;
     private static final int    DEPTH          = 3;
 
     private Network n = null;
@@ -24,9 +23,7 @@ public class LoadBalancing extends GenericStaticTypography implements Mailer, Mo
         newLevel(gateway, DEPTH);
     }
 
-    public void registerNetwork(Network network) { this.n = network; }
-
-    public void newLevel(Node root, int depth) {
+    private void newLevel(Node root, int depth) {
         for (int i = 0; i < 2; i++) {
             Node node;
             if (depth == 0) {
@@ -35,11 +32,13 @@ public class LoadBalancing extends GenericStaticTypography implements Mailer, Mo
                 node = new Node(addr++);
             }
             addNode(node);
-            addLink(root, new Link(node, LINK_DISTANCE, LINK_UPTIME));
+            addLink(root, node, LINK_DISTANCE);
 
             if (depth > 0) newLevel(node, depth-1);
         }
     }
+
+    public void registerNetwork(Network network) { this.n = network; }
 
     public void mail(Network network, int packets) {
         if (n == null) new RuntimeException("Network not set");
