@@ -1,8 +1,3 @@
-import Monitors.PrintMonitor;
-import Network.Network;
-import Routers.AntRouter;
-import Typographies.LoadBalancing;
-
 import Mailers.*;
 import Monitors.*;
 import Network.*;
@@ -12,19 +7,7 @@ import Typographies.*;
 public class Main {
 
     public static void main(String[] args) {
-        LoadBalancing lb = new LoadBalancing();
-        Network network = new Network(lb, new AntRouter(), lb);
-        lb.registerNetwork(network);
-        network.registerMonitor(new PrintMonitor());
-
-        network.run(100);
-
-        for (Node node : lb.getNodes()) System.out.println(node);
-    }
-
-    /*
-    public static void main(String[] args) {
-        TreeTopography tt = new TreeTopography(20);
+        /*TreeTopography tt = new TreeTopography(20);
         AntRouter      ar = new AntRouter();
 
         Topography t = tt;
@@ -34,13 +17,27 @@ public class Main {
         Network    n = new Network(t, r, m);
 
         n.registerMonitor(ar);
-        n.registerMonitor(new Monitors.PrintMonitor());
+        n.registerMonitor(new PrintMonitor());
 
         System.out.println(n);
 
         n.run(10000);
 
-        ar.getStats();
+        ar.getStats();*/
+
+
+        Topography t = new TreeTopography(8);
+        Router     r = new BFRouter();
+        Mailer     m = new SimpleMailer(t.getRandomNode(), t.getRandomNode());
+
+        Network    n = new Network(t, r, m);
+
+        n.registerMonitor(new PrintMonitor());
+
+        System.out.println(n);
+
+        n.run(5);
     }
-    */
+
 }
+
