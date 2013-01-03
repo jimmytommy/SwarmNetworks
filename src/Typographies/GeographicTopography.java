@@ -95,6 +95,14 @@ public class GeographicTopography implements Topography {
         }
     }
 
+    public Node getRandomNode() {
+        int rand = r.nextInt(getNodes().size());
+        for (Node node : getNodes()) {
+            if (rand-- == 0) return node;
+        }
+        return null;
+    }
+
     public String toString() {
         String s = "GeographicTopography:{range=" + range + ", size=" + size + ", nodes=[";
 

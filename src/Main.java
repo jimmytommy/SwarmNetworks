@@ -7,10 +7,9 @@ import Typographies.*;
 public class Main {
 
     public static void main(String[] args) {
-        /*
-        TreeTopography t = new TreeTopography(20);
+        GeographicTopography t = new GeographicTopography(10, 3, 10);
         AntRouter      r = new AntRouter();
-        Mailer         m = new SimpleMailer(t.getRoot(), t.getRandomNode());
+        Mailer         m = new SimpleMailer(t.getRandomNode(), t.getRandomNode());
 
         Network n = new Network(t, r, m);
 
@@ -22,8 +21,8 @@ public class Main {
         n.run(10000);
 
         r.getStats();
-        */
 
+        /*
         TreeTopography t = new TreeTopography(8);
         Router         r = new BFRouter();
         Mailer         m = new SimpleMailer(t.getRoot(), t.getRandomNode());
@@ -39,6 +38,7 @@ public class Main {
         }
 
         n.run(500);
+        */
     }
 
 }
