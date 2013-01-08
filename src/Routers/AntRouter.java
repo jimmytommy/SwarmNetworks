@@ -17,9 +17,10 @@ public class AntRouter implements Router, Monitor {
     private static final double weightDist = 1.0; // weight factor for link distances - should be >= 1
     private static final double addPh      = 20.0; // weights how much pheromone is added to trail
     private static final double evapRate   = 0.1; // evaporation rate of pheromone trails - should be in [0,1)
+    private static final double punishPh   = .9; // weights how much dropped paths are punished - should be in [0,1]
 
     private Topography t                       = null;
-    private Hashtable<Link, Double> pheromones = null;
+    private Hashtable<Integer, Hashtable<Link, Double>> pheromones = null;
 
     private int    arrivedNum        = 0;
     private int    droppedNum        = 0;
@@ -30,7 +31,7 @@ public class AntRouter implements Router, Monitor {
 
     public void setTypography(Topography t) {
         this.t          = t;
-        this.pheromones = new Hashtable<Link, Double>();
+        this.pheromones = new Hashtable<Integer, Hashtable<Link, Double>>();
     }
 
     // edge selection
@@ -40,13 +41,16 @@ public class AntRouter implements Router, Monitor {
         List<Link> links = new ArrayList<Link>(t.getLinks(src));
         if (links.size() <= 0) return null;
 
+        Hashtable routes = pheromones.get(packet.getDstAddr());
+        if (routes == null) routes = new Hashtable<Link, Double>();
+
         double[] weights = new double[links.size()];
         double sum = 0;
 
         int index = 0;
         for (Link l : links)
         {
-            double ph   = (pheromones.containsKey(l) ? pheromones.get(l) : 1);
+            double ph   = (Double) (routes.containsKey(l) ? routes.get(l) : 1.0);
             double dist = l.getDistance();
             double w    = Math.pow(ph, weightPh) * Math.pow(dist, weightDist);
 
@@ -69,10 +73,14 @@ public class AntRouter implements Router, Monitor {
 
     //pheromone update - trails evaporate over time
     public void updateRouter() {
-        for (Link l : pheromones.keySet())
+        for (Hashtable routes : pheromones.values())
         {
-            double ph = (pheromones.containsKey(l) ? pheromones.get(l) : 1);
-            pheromones.put(l, (ph * (1 - evapRate)));
+            for (Object pher : routes.values())
+            {
+                double ph = (Double) pher * (1 - evapRate); //(Double) (routes.containsKey(l) ? routes.get(l) : 1);
+                if (ph < 1.0) ph = 1.0;
+                //routes.put(l, (ph * (1 - evapRate)));
+            }
         }
     }
 
@@ -86,6 +94,25 @@ public class AntRouter implements Router, Monitor {
 
     public void dropped(Packet packet, FailureCondition fc) {
         droppedNum++;
+
+        double length = packet.getLinkRoute().size();
+
+        Hashtable routes = pheromones.get(packet.getDstAddr());
+        if (routes == null) routes = new Hashtable<Link, Double>();
+
+        double i = length;
+        for (Link l : packet.getLinkRoute())
+        {
+            double punish = (i > 0 ? i / length : 0) * punishPh;
+            double ph = (Double) (routes.containsKey(l) ? routes.get(l) : 1.0);
+            ph *= (1 - punish);
+            routes.put(l, ph);
+            i--;
+        }
+
+        pheromones.put(packet.getDstAddr(), routes);
+
+
         // System.out.println("Dropped: " + " - " + fc);
         // Ignore dropped packets
     }
@@ -100,23 +127,30 @@ public class AntRouter implements Router, Monitor {
 
         double delta = addPh / dist;
 
+        Hashtable routes = pheromones.get(packet.getDstAddr());
+        if (routes == null) routes = new Hashtable<Link, Double>();
+
         for (Link l : packet.getLinkRoute())
         {
-            double ph = (pheromones.containsKey(l) ? pheromones.get(l) : 1);
+            double ph = (Double) (routes.containsKey(l) ? routes.get(l) : 1.0);
             ph += delta;
-            pheromones.put(l, ph);
+            routes.put(l, ph);
         }
+
+        pheromones.put(packet.getDstAddr(), routes);
 
         int printNum = 1;
         arrivedNum++;
         partAvgPathLength += dist;
         totPathLength += dist;
         if (dist < bestPathLength) bestPathLength = dist;
+        /*
         if (arrivedNum % printNum == 0)
         {
             System.out.println((arrivedNum - printNum) + "-" + arrivedNum + " Average = " + (partAvgPathLength / (double) printNum));
             partAvgPathLength = 0;
         }
+        */
 
         //System.out.print("Arrived: Path Length: " + dist + ", " + packet.getPayload().toString() + ", Route: {");
         //for (Node n : packet.getNodeRoute())

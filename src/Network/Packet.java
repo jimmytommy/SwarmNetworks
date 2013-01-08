@@ -12,7 +12,7 @@ import java.util.List;
 public class Packet {
 
     // Starting Packet Time to Live
-    private static final int INIT_TTL = 20;
+    private static final int INIT_TTL = 225;
 
     // Callback for events that happen to packet
     private final Monitor monitor;
