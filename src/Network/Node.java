@@ -30,13 +30,13 @@ public class Node {
 
     /**
      * Sends the packet to given destination.
-     * @param dest Destination node on the network.
+     * @param dstAddr Destination address on the network.
      * @param payload Arbitrary payload may be supplied to identify the packet.
      *                If no payload desired, supply null.
      * @param monitor The monitor to notify when packet dropped/arrived.
      */
-    public void send(int dstAddr, Object payload, Monitor monitor) {
-        Packet packet = new Packet(this.addr, dstAddr, payload, monitor);
+    public void send(int dstAddr, Object payload, Network network) {
+        Packet packet = new Packet(this.addr, dstAddr, payload, network);
         recv(packet);
     }
 

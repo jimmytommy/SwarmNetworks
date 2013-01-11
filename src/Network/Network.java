@@ -36,10 +36,13 @@ public class Network {
         r.setTypography(t);
     }
 
+    public long getClock() { return clock; }
+
     public void registerMonitor(Monitor monitor) { broadcastMonitor.registerMonitor(monitor); }
+    public Monitor getBroadcastMonitor()         { return broadcastMonitor;                   }
 
     public void sendPacket(Node src, int dstAddr, Object payload) {
-        src.send(dstAddr, payload, broadcastMonitor);
+        src.send(dstAddr, payload, this);
     }
 
     public void run(int ticks) {

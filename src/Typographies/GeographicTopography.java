@@ -44,6 +44,19 @@ public class GeographicTopography implements Topography {
         }
     }
 
+    public GeographicTopography(long seed, int nodes, double range, int size) {
+        r = new Random(seed);
+
+        this.range = range;
+        this.size  = size;
+
+        for (int i = 0; i < nodes; i++) {
+            this.map.put(new Node(i), new Point(r.nextInt(size), r.nextInt(size)));
+        }
+
+        r = new Random();
+    }
+
     public Set<Node> getNodes() {
         return map.keySet();
     }

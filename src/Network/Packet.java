@@ -1,7 +1,6 @@
 package Network;
 
 import Monitors.FailureCondition;
-import Monitors.Monitor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,10 +11,10 @@ import java.util.List;
 public class Packet {
 
     // Starting Packet Time to Live
-    private static final int INIT_TTL = 225;
+    private static final int INIT_TTL = 20;
 
     // Callback for events that happen to packet
-    private final Monitor monitor;
+    private final Network network;
 
     // Contents of the IP Packet Header
     private int srcAddr;
@@ -29,12 +28,17 @@ public class Packet {
     private List<Node> nodeRoute = new ArrayList<Node>();
     private List<Link> linkRoute = new ArrayList<Link>();
 
-    public Packet(int srcAddr, int dstAddr, Object payload, Monitor monitor) {
+    // Time Packet Sent and Received on Network
+    private long start = -1;
+    private long end   = -1;
+
+    public Packet(int srcAddr, int dstAddr, Object payload, Network network) {
         this.srcAddr  = srcAddr;
-        this.dstAddr = dstAddr;
+        this.dstAddr  = dstAddr;
         this.ttl      = INIT_TTL;
         this.payload  = payload;
-        this.monitor  = monitor;
+        this.network  = network;
+        this.start    = network.getClock();
     }
 
     public int    getSrcAddr()  { return srcAddr;    }
@@ -48,8 +52,17 @@ public class Packet {
      */
     public int decrTTL() { return --ttl; }
 
-    public void drop(FailureCondition fc) { monitor.dropped(this, fc); }
-    public void arrive()                  { monitor.arrived(this);     }
+    public long getStart() { return start; }
+    public long getEnd()   { return end;   }
+
+    public void drop(FailureCondition fc) {
+        end = network.getClock();
+        network.getBroadcastMonitor().dropped(this, fc);
+    }
+    public void arrive() {
+        end = network.getClock();
+        network.getBroadcastMonitor().arrived(this);
+    }
 
     public void addToNodeRoute(Node node) { this.nodeRoute.add(node);  }
     public List<Node> getNodeRoute()      { return this.nodeRoute;     }
