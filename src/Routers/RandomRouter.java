@@ -5,7 +5,7 @@ import Network.Node;
 import Network.Packet;
 import Typographies.Topography;
 
-import java.util.List;
+import java.util.Collection;
 import java.util.Random;
 
 public class RandomRouter implements Router {
@@ -18,11 +18,11 @@ public class RandomRouter implements Router {
         this.t = t;
     }
 
-    public Link getNextStep(Node src, Packet packet) throws RuntimeException {
+    public Node getNextStep(Node src, Packet packet) throws RuntimeException {
         if (t == null) new RuntimeException("Typography not set");
-        List<Link> links = t.getLinks(src);
-        if (links.size() <= 0) return null;
-        else                   return links.get(r.nextInt(links.size()));
+        Collection<Link> links = t.getLinks(src);
+        if (links.size() == 0) return null;
+        else                   return (Node) links.toArray()[r.nextInt(links.size())];
     }
 
     public void updateRouter() {

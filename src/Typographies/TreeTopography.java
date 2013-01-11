@@ -10,47 +10,35 @@ import java.util.Random;
 /**
  * Creates a topography in the form a of a simple connected tree with root.
  */
-public class TreeTopography implements Topography {
+public class TreeTopography extends GenericStaticTypography {
 
-    private static final double LINK_UPTIME = 1.0;
-    private static final int    LINK_DIST   = 1;
-
-    private static final Random r = new Random();
+    private static final int LINK_DIST = 1;
 
     private Node root;
-    private List<Node>       nodes;
-    private List<List<Link>> links;
 
-    public TreeTopography(int nodes) throws IllegalArgumentException {
-        if (nodes < 1) throw new IllegalArgumentException("Tree Topographies must have at least one node");
+    public TreeTopography(int n) throws IllegalArgumentException {
+        if (n < 1) throw new IllegalArgumentException("Tree Topographies must have at least one node");
 
         Random r = new Random();
-
-        this.nodes = new ArrayList<Node>(nodes);
-
-        this.links = new ArrayList<List<Link>>(nodes);
-        for (int i = 0; i < nodes; i++) this.links.add(new ArrayList<Link>());
+        List<Node> nodes = new ArrayList<Node>(n);
 
         int i = 0;
         this.root = new Node(i);
-        this.nodes.add(root);
+        addNode(root);
+        nodes.add(root);
 
-        while (++i < nodes) {
+        while (++i < n) {
             Node newNode = new Node(i);
-            Node oldNode = this.nodes.get(r.nextInt(this.nodes.size()));
+            Node oldNode = nodes.get(r.nextInt(nodes.size()));
 
-            this.getLinks(oldNode).add(new Link(newNode, LINK_DIST, LINK_UPTIME));
-            // this.getLinks(newNode).add(new Link(oldNode, LINK_DIST, LINK_UPTIME));
+            addLink(oldNode, newNode, LINK_DIST);
 
-            this.nodes.add(newNode);
+            addNode(newNode);
+            nodes.add(newNode);
         }
     }
 
-    public Node       getRoot()           { return root;                               }
-    public List<Node> getNodes()          { return nodes;                              }
-    public List<Link> getLinks(Node node) { return links.get(node.getAddr());          }
-    public Node       getRandomNode()     { return nodes.get(r.nextInt(nodes.size())); }
-    public void       updateTypography()  { /* Static topography so no migration */    }
+    public Node getRoot() { return root; }
 
     public String print(Node root) {
         String s = "N" + root.getAddr();

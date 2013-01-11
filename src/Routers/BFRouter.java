@@ -24,6 +24,7 @@ public class BFRouter implements Router {
 		this.t = t;
 	}
 
+<<<<<<< HEAD
     public Link getNextStep(Node src, Packet packet) throws RuntimeException {
         System.out.println("here");
         if (t == null) new RuntimeException("Typography not set");
@@ -31,6 +32,12 @@ public class BFRouter implements Router {
         System.out.println("The address is " + nodeToInt.get(n) + " the source is " + nodeToInt.get(src));
         System.out.println("link " + pathtables[nodeToInt.get(src)].via[nodeToInt.get(n)]);
     	return pathtables[nodeToInt.get(src)].via[nodeToInt.get(n)];
+=======
+    public Node getNextStep(Node src, Packet packet) throws RuntimeException {
+        if (t == null) new RuntimeException("Typography not set");
+    	Node n = intToNode.get(packet.getDstAddr());
+    	return pathtables[nodeToInt.get(src)].via[nodeToInt.get(n)].getDst();
+>>>>>>> 79336a662e6219b38ec7bec0b22de9ac64b75030
 
     }
 
