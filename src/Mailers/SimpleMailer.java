@@ -1,3 +1,8 @@
+package Mailers;
+
+import Network.Network;
+import Network.Node;
+
 public class SimpleMailer implements Mailer {
 
     private int i = 0;
@@ -9,7 +14,7 @@ public class SimpleMailer implements Mailer {
     }
 
     public void mail(Network network, int packets) {
-        while (packets-- > 0) network.sendPacket(src, dst, "Packet " + i++);
+        while (packets-- > 0) network.sendPacket(src, dst.getAddr(), "Packet " + i++);
     }
 
     public String toString() {

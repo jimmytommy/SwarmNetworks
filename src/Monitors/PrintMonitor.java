@@ -1,3 +1,6 @@
+package Monitors;
+
+import Network.Packet;
 
 public class PrintMonitor implements Monitor {
     public void dropped(Packet packet, FailureCondition fc) {

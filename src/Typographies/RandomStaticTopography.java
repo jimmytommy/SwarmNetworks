@@ -1,3 +1,8 @@
+package Typographies;
+
+import Network.Link;
+import Network.Node;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;

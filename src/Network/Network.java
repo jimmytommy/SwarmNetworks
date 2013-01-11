@@ -1,5 +1,11 @@
-import java.util.ArrayList;
-import java.util.List;
+package Network;
+
+import Mailers.Mailer;
+import Monitors.BroadcastMonitor;
+import Monitors.FailureCondition;
+import Monitors.Monitor;
+import Routers.Router;
+import Typographies.Topography;
 
 public class Network {
 
@@ -10,8 +16,8 @@ public class Network {
     private static final int PACKETS_PER_MAIL  = 1;
 
     private final Topography t;
-    private final Router     r;
-    private final Mailer     m;
+    private final Router r;
+    private final Mailer m;
 
     private final BroadcastMonitor broadcastMonitor = new BroadcastMonitor();
 
@@ -27,8 +33,8 @@ public class Network {
 
     public void registerMonitor(Monitor monitor) { broadcastMonitor.registerMonitor(monitor); }
 
-    public void sendPacket(Node src, Node dst, Object payload) {
-        src.send(dst, payload, broadcastMonitor);
+    public void sendPacket(Node src, int dstAddr, Object payload) {
+        src.send(dstAddr, payload, broadcastMonitor);
     }
 
     private void movePackets(int moves) {

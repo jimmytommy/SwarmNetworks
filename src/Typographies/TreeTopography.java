@@ -1,3 +1,8 @@
+package Typographies;
+
+import Network.Link;
+import Network.Node;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -12,7 +17,7 @@ public class TreeTopography implements Topography {
 
     private static final Random r = new Random();
 
-    private Node             root;
+    private Node root;
     private List<Node>       nodes;
     private List<List<Link>> links;
 

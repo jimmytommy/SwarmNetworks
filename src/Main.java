@@ -1,3 +1,9 @@
+    
+import Mailers.*;
+import Monitors.*;
+import Network.*;
+import Routers.*;
+import Typographies.*;
 
 public class Main {
 
@@ -21,7 +27,7 @@ public class Main {
         ar.getStats();*/
 
 
-        Topography t = new GeographicTopography(10, 5, 20);
+        Topography t = new TreeTopography(8);
         Router     r = new BFRouter();
         Mailer     m = new SimpleMailer(t.getRandomNode(), t.getRandomNode());
 
@@ -31,8 +37,9 @@ public class Main {
 
         System.out.println(n);
 
-        n.run(70);
+        n.run(5);
     }
 
 }
+
 
