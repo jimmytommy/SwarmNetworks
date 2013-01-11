@@ -16,6 +16,7 @@ public class Main {
 
         n.registerMonitor(r);
         n.registerMonitor(new PrintMonitor());
+        n.registerMonitor(new CsvMonitor("test_monitor.csv"));
 
         System.out.println(n);
 
