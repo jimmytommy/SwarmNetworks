@@ -14,9 +14,9 @@ import java.util.Set;
 
 public class Network {
 
-    private static final int TYPOGRAPHY_UPDATE = 30;
-    private static final int ROUTER_UPDATE     = 50;
-    private static final int SEND_MAIL         = 10;
+    private final int TYPOGRAPHY_UPDATE;
+    private final int ROUTER_UPDATE;
+    private final int SEND_MAIL;
 
     private static final int PACKETS_PER_MAIL  = 1;
 
@@ -29,9 +29,17 @@ public class Network {
     private long clock = 0;
 
     public Network(Topography t, Router r, Mailer m) {
+        this(t, r, m, 10, 10, 1);
+    }
+
+    public Network(Topography t, Router r, Mailer m, int typography_update, int router_update, int send_mail) {
         this.t = t;
         this.r = r;
         this.m = m;
+
+        this.TYPOGRAPHY_UPDATE = typography_update;
+        this.ROUTER_UPDATE     = router_update;
+        this.SEND_MAIL         = send_mail;
 
         r.setTypography(t);
     }

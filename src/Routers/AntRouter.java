@@ -19,7 +19,8 @@ public class AntRouter implements Router, Monitor {
     private final double evapRate; // evaporation rate of pheromone trails - should be in [0,1]
     private final double punishPh; // weights how much dropped paths are punished - should be in [0,1]
 
-    private Topography t                       = null;
+
+    private Topography t                                           = null;
     private Hashtable<Integer, Hashtable<Link, Double>> pheromones = null;
 
     private int    arrivedNum        = 0;
@@ -30,11 +31,11 @@ public class AntRouter implements Router, Monitor {
 
     public AntRouter()
     {
-        this.weightPh = 1.0;
+        this.weightPh   = 1.0;
         this.weightDist = 1.0;
-        this.addPh = 1.0;
-        this.evapRate = 0.9;
-        this.punishPh = 0.9;
+        this.addPh      = 1.0;
+        this.evapRate   = 0.9;
+        this.punishPh   = 0.9;
     }
 
     public AntRouter(double weightPh, double weightDist, double addPh, double evapRate, double punishPh)
@@ -43,11 +44,11 @@ public class AntRouter implements Router, Monitor {
                 (punishPh < 0) || (punishPh > 1))
             throw new IllegalArgumentException("Argument Out of Bounds");
 
-        this.weightPh = weightPh;
+        this.weightPh   = weightPh;
         this.weightDist = weightDist;
-        this.addPh = addPh;
-        this.evapRate = evapRate;
-        this.punishPh = punishPh;
+        this.addPh      = addPh;
+        this.evapRate   = evapRate;
+        this.punishPh   = punishPh;
     }
 
     public void setTypography(Topography t) {
