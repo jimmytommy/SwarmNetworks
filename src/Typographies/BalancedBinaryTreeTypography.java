@@ -8,6 +8,7 @@ public class BalancedBinaryTreeTypography extends GenericStaticTypography {
 
     public BalancedBinaryTreeTypography(int depth) {
         Node root = new Node(i++);
+        addNode(root);
         addLevel(root, 0, depth);
     }
 
@@ -16,6 +17,9 @@ public class BalancedBinaryTreeTypography extends GenericStaticTypography {
 
         Node n1 = new Node(i++);
         Node n2 = new Node(i++);
+
+        addNode(n1);
+        addNode(n2);
 
         addLink(root, n1, 3);
         addLink(root, n2, 3);
