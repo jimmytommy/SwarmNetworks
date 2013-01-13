@@ -54,7 +54,7 @@ public class GeographicTopography implements Topography {
             this.map.put(new Node(i), new Point(r.nextInt(size), r.nextInt(size)));
         }
 
-        r = new Random();
+        //r = new Random();
     }
 
     public Set<Node> getNodes() {
