@@ -26,20 +26,20 @@ public class LinkFailureTest implements Runnable {
         Router     r = hbf;
         Mailer     m = lft;
 
-        Network n = new Network(t, r, m, 7, 10, 1);
+        Network n = new Network(t, r, m, 70, 100, 1);
         r.updateRouter();
 
         ConclusionMonitor bfcm = new ConclusionMonitor();
         n.registerMonitor(bfcm);
         // n.registerMonitor(new PrintMonitor());
-        // n.registerMonitor(new CsvMonitor("CongestionHashBFRouter.csv"));
+        n.registerMonitor(new CsvMonitor("LinkFailureHashBFRouter.csv"));
 
         n.run(2000);
 
         System.out.println("Running Test with Ant Router");
 
         lft = new LinkFailureExample();
-        AntRouter ar = new AntRouter(1.0,1.0,7.0,.1,1.0,"LinkFailurePheromones.csv");
+        AntRouter ar = new AntRouter(.1,1.0,7.0,1.0,.1,"LinkFailurePheromones.csv");
 
         t = lft;
         r = ar;
@@ -51,7 +51,7 @@ public class LinkFailureTest implements Runnable {
         n.registerMonitor(arcm);
         n.registerMonitor(ar);
         // n.registerMonitor(new PrintMonitor());
-        // n.registerMonitor(new CsvMonitor("CongestionAntRouter.csv"));
+        n.registerMonitor(new CsvMonitor("LinkFailureAntRouter.csv"));
 
         n.run(2000);
 

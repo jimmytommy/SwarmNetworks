@@ -29,7 +29,7 @@ public class CsvMonitor implements Monitor {
 
     public void dropped(Packet packet, FailureCondition fc) {
         String s = "";
-        s += "dropped, ";
+        s += "0, ";
         s += packet.getSrcAddr() + ", ";
         s += packet.getDstAddr() + ", ";
         s += packet.getTtl() + ", ";
@@ -47,7 +47,7 @@ public class CsvMonitor implements Monitor {
 
     public void arrived(Packet packet) {
         String s = "";
-        s += "arrived, ";
+        s += "1, ";
         s += packet.getSrcAddr() + ", ";
         s += packet.getDstAddr() + ", ";
         s += packet.getTtl() + ", ";

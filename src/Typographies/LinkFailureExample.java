@@ -36,8 +36,8 @@ public class LinkFailureExample implements Topography, Mailer {
     }
 
     public boolean isConnected(Node src, Node dst) {
-        if (src.getAddr() == 0 && dst.getAddr() == dstAddr)         return up;
-        if (src.getAddr() == dstAddr-1 && dst.getAddr() == dstAddr) return !up;
+        if (src.getAddr() == 0 && dst.getAddr() == dstAddr)         return true;
+        if (src.getAddr() == dstAddr-1 && dst.getAddr() == dstAddr) return true;
         if (src.getAddr() == dstAddr)                               return false;
         if (src.getAddr() == dst.getAddr()-1)                       return true;
         return false;
@@ -49,6 +49,7 @@ public class LinkFailureExample implements Topography, Mailer {
     }
 
     public boolean canTransmit(Node src, Node dst) {
+        if (src.getAddr() == 0 && dst.getAddr() == dstAddr)         return up;
         return isConnected(src, dst);
     }
 
