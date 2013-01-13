@@ -21,6 +21,7 @@ public class AdHocTest implements Runnable {
     public void run() {
         long seed = new Random().nextLong();
 
+        System.out.println("AdHocTest");
         System.out.println("Running Test with BF Router");
         GeographicTopography gt = new GeographicTopography(seed, 10, 2.0, 5);
         HashBFRouter        hbf = new HashBFRouter();
@@ -76,4 +77,5 @@ public class AdHocTest implements Runnable {
     }
 
 }
+
 

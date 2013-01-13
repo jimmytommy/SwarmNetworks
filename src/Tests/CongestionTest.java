@@ -14,6 +14,7 @@ import Typographies.Topography;
 public class CongestionTest implements Runnable {
 
     public void run() {
+        System.out.println("CongestionTest");
         System.out.println("Running Test with BF Router");
         CongestionExampleTypography cet = new CongestionExampleTypography();
         HashBFRouter                hbf = new HashBFRouter();
@@ -33,8 +34,6 @@ public class CongestionTest implements Runnable {
         n.run(200);
 
         System.out.println("Running Test with Ant Router");
-
-        System.out.println("Running Test with BF Router");
         cet = new CongestionExampleTypography();
         AntRouter ar = new AntRouter(1.0,1.0,1.0,.1,1.0,"CongestionPheromones.csv");
 
@@ -60,3 +59,4 @@ public class CongestionTest implements Runnable {
     }
 
 }
+
