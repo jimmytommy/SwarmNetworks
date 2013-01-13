@@ -28,20 +28,18 @@ public class LinkFailureExample implements Topography, Mailer {
     public Collection<Link> getLinks(Node node) {
         List<Link> links = new ArrayList<Link>();
 
-        if (node.getAddr() == 0 && up) {
-            links.add(new Link(nodes.get(0), nodes.get(dstAddr), 7));
-        }
-        if (node.getAddr() != dstAddr) {
-            links.add(new Link(nodes.get(node.getAddr()), nodes.get(node.getAddr()+1), 7));
+        for (Node dst : getNodes()) {
+            if (isConnected(node, dst)) links.add(new Link(node, dst, 7));
         }
 
         return links;
     }
 
     public boolean isConnected(Node src, Node dst) {
-        if (src.getAddr() == 0 && dst.getAddr() == dstAddr) return up;
-        if (src.getAddr() == dstAddr)                       return false;
-        if (src.getAddr() == dst.getAddr()-1)               return true;
+        if (src.getAddr() == 0 && dst.getAddr() == dstAddr)         return up;
+        if (src.getAddr() == dstAddr-1 && dst.getAddr() == dstAddr) return !up;
+        if (src.getAddr() == dstAddr)                               return false;
+        if (src.getAddr() == dst.getAddr()-1)                       return true;
         return false;
     }
 
