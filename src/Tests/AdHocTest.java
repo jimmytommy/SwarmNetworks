@@ -14,11 +14,15 @@ import Typographies.CongestionExampleTypography;
 import Typographies.GeographicTopography;
 import Typographies.Topography;
 
+import java.util.Random;
+
 public class AdHocTest implements Runnable {
 
     public void run() {
+        long seed = new Random().nextLong();
+
         System.out.println("Running Test with BF Router");
-        GeographicTopography gt = new GeographicTopography(10, 2.0, 5);
+        GeographicTopography gt = new GeographicTopography(seed, 10, 2.0, 5);
         HashBFRouter        hbf = new HashBFRouter();
 
         Node a = gt.getRandomNode();
@@ -45,8 +49,8 @@ public class AdHocTest implements Runnable {
         bfcm.printStats();
 
         System.out.println("Running Test with Ant Router");
-        gt = new GeographicTopography(5, 2.0, 4);
-        AntRouter ar = new AntRouter();
+        gt = new GeographicTopography(seed, 10, 2.0, 5);
+        AntRouter ar = new AntRouter(1.0,1.0,1.0,.1,1.0, "AdHocPheromones.csv");
 
         a = gt.getRandomNode();
         b = gt.getRandomNode();

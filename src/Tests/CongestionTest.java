@@ -36,7 +36,7 @@ public class CongestionTest implements Runnable {
 
         System.out.println("Running Test with BF Router");
         cet = new CongestionExampleTypography();
-        AntRouter ar = new AntRouter();
+        AntRouter ar = new AntRouter(1.0,1.0,1.0,.1,1.0,"CongestionPheromones.csv");
 
         t = cet;
         r = ar;
