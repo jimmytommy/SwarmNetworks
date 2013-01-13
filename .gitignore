@@ -6,3 +6,13 @@ out/*
 src/test_monitor
 
 src/test_monitor.csv
+
+src/Tests/BinaryTreeTest.java
+
+src/Typographies/BalancedBinaryTreeTypography.java
+
+src/Typographies/BalancedBinaryTreeTypography.java
+
+src/Tests/CongestionTest.java
+
+src/Tests/AdHocTest.java
