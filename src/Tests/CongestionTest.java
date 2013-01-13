@@ -29,7 +29,7 @@ public class CongestionTest implements Runnable {
         ConclusionMonitor bfcm = new ConclusionMonitor();
         n.registerMonitor(bfcm);
         // n.registerMonitor(new PrintMonitor());
-        // n.registerMonitor(new CsvMonitor("CongestionHashBFRouter.csv"));
+         n.registerMonitor(new CsvMonitor("CongestionHashBFRouter.csv"));
 
         n.run(200);
 
@@ -47,7 +47,7 @@ public class CongestionTest implements Runnable {
         n.registerMonitor(arcm);
         n.registerMonitor(ar);
         // n.registerMonitor(new PrintMonitor());
-        // n.registerMonitor(new CsvMonitor("CongestionAntRouter.csv"));
+         n.registerMonitor(new CsvMonitor("CongestionAntRouter.csv"));
 
         n.run(200);
 

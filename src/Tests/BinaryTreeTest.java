@@ -46,7 +46,7 @@ public class BinaryTreeTest implements Runnable {
     private void runAnt(int weightPH) {
         System.out.println("Running Test with Ant Router");
         BalancedBinaryTreeTypography bbt = new BalancedBinaryTreeTypography(5);
-        AntRouter ar = new AntRouter(weightPH, 1, 1, 0, .9, "BinaryTreeTest");
+        AntRouter ar = new AntRouter(weightPH, 1, 1, 0, .9, "BinaryTreePheromones.csv");
 
         Topography t = bbt;
         Router r = ar;
