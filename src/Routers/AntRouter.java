@@ -7,6 +7,8 @@ import Network.Node;
 import Network.Packet;
 import Typographies.Topography;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.util.*;
 
 //algorithm taken from http://en.wikipedia.org/wiki/Ant_colony_optimization_algorithms
@@ -22,6 +24,8 @@ public class AntRouter implements Router, Monitor {
 
     private Topography t                                           = null;
     private Hashtable<Integer, Hashtable<Link, Double>> pheromones = null;
+    private ArrayList<Link> links                                  = null;
+    private BufferedWriter out;
 
     private int    arrivedNum        = 0;
     private int    droppedNum        = 0;
@@ -36,9 +40,16 @@ public class AntRouter implements Router, Monitor {
         this.addPh      = 1.0;
         this.evapRate   = 0.9;
         this.punishPh   = 0.9;
+
+        try {
+            out = new BufferedWriter(new FileWriter("AntRouterPheromones"), 32768);
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 
-    public AntRouter(double weightPh, double weightDist, double addPh, double evapRate, double punishPh)
+    public AntRouter(double weightPh, double weightDist, double addPh, double evapRate, double punishPh, String filename)
     {
         if ((weightPh < 0) || (weightDist < 1) || (evapRate < 0) || (evapRate > 1) ||
                 (punishPh < 0) || (punishPh > 1))
@@ -49,11 +60,42 @@ public class AntRouter implements Router, Monitor {
         this.addPh      = addPh;
         this.evapRate   = evapRate;
         this.punishPh   = punishPh;
+
+        try {
+            out = new BufferedWriter(new FileWriter(filename), 32768);
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 
     public void setTypography(Topography t) {
         this.t          = t;
         this.pheromones = new Hashtable<Integer, Hashtable<Link, Double>>();
+        this.links      = new ArrayList<Link>();
+
+        for (Node n : t.getNodes())
+        {
+            for (Link l : t.getLinks(n))
+            {
+                this.links.add(l);
+            }
+        }
+
+        String s = "";
+        s += "iteration, destination,";
+        for (Link l : this.links)
+        {
+            s += l.getSrc().getAddr() + "->" + l.getDst().getAddr() + ",";
+        }
+        s += "\n";
+
+        try {
+            out.write(s);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     // edge selection
@@ -74,7 +116,7 @@ public class AntRouter implements Router, Monitor {
         {
             double ph   = (Double) (routes.containsKey(l) ? routes.get(l) : 1.0);
             double dist = l.getDistance();
-            double w    = Math.pow(ph, weightPh) * Math.pow(dist, weightDist);
+            double w    = Math.pow(ph, weightPh);// * Math.pow(dist, weightDist);
 
             weights[index++] = w;
 
@@ -173,9 +215,7 @@ public class AntRouter implements Router, Monitor {
 
         pheromones.put(packet.getDstAddr(), routes);
 
-
-        // System.out.println("Dropped: " + " - " + fc);
-        // Ignore dropped packets
+        recordPheromones(packet.getDstAddr());
     }
 
     //If arrived, lay down a pheromone path
@@ -211,18 +251,43 @@ public class AntRouter implements Router, Monitor {
         partAvgPathLength += dist;
         totPathLength += dist;
         if (dist < bestPathLength) bestPathLength = dist;
-        /*
-        if (arrivedNum % printNum == 0)
-        {
-            System.out.println((arrivedNum - printNum) + "-" + arrivedNum + " Average = " + (partAvgPathLength / (double) printNum));
-            partAvgPathLength = 0;
-        }
-        */
 
-        //System.out.print("Arrived: Path Length: " + dist + ", " + packet.getPayload().toString() + ", Route: {");
-        //for (Node n : packet.getNodeRoute())
-        //    System.out.print(n.getAddr() + ", ");
-        //System.out.println();
+        recordPheromones(packet.getDstAddr());
+    }
+
+    public void recordPheromones(int dest)
+    {
+        Hashtable<Link, Double> hash = pheromones.get(dest);
+        if (hash == null) return;
+
+        String s = "";
+        s += (arrivedNum + droppedNum) + "," + dest + ",";
+        for (Link l : links)
+        {
+            double ph   = (Double) (hash.containsKey(l) ? hash.get(l) : 1.0);
+            double dist = l.getDistance();
+            double w    = Math.pow(ph, weightPh);// * Math.pow(dist, weightDist);
+
+            s += w + ",";
+        }
+        s += "\n";
+
+        try {
+            out.write(s);
+            out.flush();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void close() {
+        try {
+            out.close();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public String toString() {

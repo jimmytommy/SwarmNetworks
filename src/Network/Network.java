@@ -77,8 +77,8 @@ public class Network {
                         packet.drop(FailureCondition.LINK_FAILURE);
                         break;
                     }
-                    dst.recv(packet);
                     packet.addToLinkRoute(t.getLink(src, dst));
+                    dst.recv(packet);
                 }
             }
 

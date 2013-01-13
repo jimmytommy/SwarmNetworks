@@ -1,13 +1,16 @@
 package Typographies;
 
+import Mailers.Mailer;
 import Network.Link;
 import Network.Node;
+import Network.Network;
 
 import java.util.*;
 
-public class LinkFailureExample implements Topography {
+public class LinkFailureExample implements Topography, Mailer {
 
     private static int dstAddr = 5;
+    private int round = 0;
 
     private boolean up = true;
     private List<Node> nodes = new ArrayList<Node>();
@@ -53,5 +56,11 @@ public class LinkFailureExample implements Topography {
 
     public void updateTypography() {
         up = !up;
+    }
+
+    public void mail(Network network, int packets) {
+        network.sendPacket(nodes.get(0), 5, "Round " + round);
+
+        round++;
     }
 }

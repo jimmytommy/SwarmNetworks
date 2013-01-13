@@ -54,7 +54,7 @@ public class GeographicTopography implements Topography {
             this.map.put(new Node(i), new Point(r.nextInt(size), r.nextInt(size)));
         }
 
-        r = new Random();
+        //r = new Random();
     }
 
     public Set<Node> getNodes() {
@@ -70,10 +70,13 @@ public class GeographicTopography implements Topography {
         for (Node dst : getNodes()) {
             if (isConnected(src, dst)) links.add(new Link(src, dst, LINK_DIST));
         }
+        //System.out.println(links.size());
         return links;
     }
 
     public boolean isConnected(Node src, Node dst) {
+        //System.out.println("src = " + getPoint(src) + " dest = " + getPoint(dst));
+        //System.out.println(getPoint(src).distanceTo(getPoint(dst)) > range);
         if (src == dst) return false;
         if (getPoint(src).distanceTo(getPoint(dst)) > range) return false;
         return true;
@@ -97,12 +100,16 @@ public class GeographicTopography implements Topography {
                 switch (r.nextInt(4)) {
                     case 0:
                         if (p.x < size-1) p.x++;
+                        break;
                     case 1:
                         if (p.y < size-1) p.y++;
+                        break;
                     case 2:
                         if (p.x > 0)      p.x--;
+                        break;
                     case 3:
                         if (p.y > 0)      p.y--;
+                        break;
                 }
             }
         }

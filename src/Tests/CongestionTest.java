@@ -14,6 +14,7 @@ import Typographies.Topography;
 public class CongestionTest implements Runnable {
 
     public void run() {
+        System.out.println("CongestionTest");
         System.out.println("Running Test with BF Router");
         CongestionExampleTypography cet = new CongestionExampleTypography();
         HashBFRouter                hbf = new HashBFRouter();
@@ -28,15 +29,13 @@ public class CongestionTest implements Runnable {
         ConclusionMonitor bfcm = new ConclusionMonitor();
         n.registerMonitor(bfcm);
         // n.registerMonitor(new PrintMonitor());
-        // n.registerMonitor(new CsvMonitor("CongestionHashBFRouter.csv"));
+         n.registerMonitor(new CsvMonitor("CongestionHashBFRouter.csv"));
 
         n.run(200);
 
         System.out.println("Running Test with Ant Router");
-
-        System.out.println("Running Test with BF Router");
         cet = new CongestionExampleTypography();
-        AntRouter ar = new AntRouter();
+        AntRouter ar = new AntRouter(1.0,1.0,1.0,.1,1.0,"CongestionPheromones.csv");
 
         t = cet;
         r = ar;
@@ -48,7 +47,7 @@ public class CongestionTest implements Runnable {
         n.registerMonitor(arcm);
         n.registerMonitor(ar);
         // n.registerMonitor(new PrintMonitor());
-        // n.registerMonitor(new CsvMonitor("CongestionAntRouter.csv"));
+         n.registerMonitor(new CsvMonitor("CongestionAntRouter.csv"));
 
         n.run(200);
 
@@ -60,3 +59,4 @@ public class CongestionTest implements Runnable {
     }
 
 }
+

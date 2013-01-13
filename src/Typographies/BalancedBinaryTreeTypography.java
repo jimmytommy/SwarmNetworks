@@ -5,10 +5,13 @@ import Network.Node;
 public class BalancedBinaryTreeTypography extends GenericStaticTypography {
 
     private int i = 0;
+    private Node main_root;
+    private Node leaf; 
 
     public BalancedBinaryTreeTypography(int depth) {
-        Node root = new Node(i++);
-        addLevel(root, 0, depth);
+        main_root = new Node(i++);
+        addNode(main_root);
+        addLevel(main_root, 0, depth);
     }
 
     public void addLevel(Node root, int level, int depth) {
@@ -16,6 +19,11 @@ public class BalancedBinaryTreeTypography extends GenericStaticTypography {
 
         Node n1 = new Node(i++);
         Node n2 = new Node(i++);
+
+        if (level == depth) leaf = n1;
+
+        addNode(n1);
+        addNode(n2);
 
         addLink(root, n1, 3);
         addLink(root, n2, 3);
@@ -27,5 +35,13 @@ public class BalancedBinaryTreeTypography extends GenericStaticTypography {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public Node getRoot() {
+        return main_root;
+    }
+
+    public Node getLeaf() {
+        return leaf;
     }
 }

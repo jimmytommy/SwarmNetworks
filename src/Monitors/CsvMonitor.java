@@ -18,7 +18,7 @@ public class CsvMonitor implements Monitor {
 			e.printStackTrace();
 		}
 
-		String s = "status, source address, destination address, ttl, payload, FaliureCondition\n";
+		String s = "status, source address, destination address, ttl, payload, FailureCondition\n";
 		try {
 			out.write(s);
 		}
@@ -38,6 +38,7 @@ public class CsvMonitor implements Monitor {
 
 		try {
 			out.write(s);
+            out.flush();
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -54,6 +55,7 @@ public class CsvMonitor implements Monitor {
 		
 		try  {
 			out.write(s);
+            out.flush();
 		}
 		catch (Exception e) {
 			e.printStackTrace();
