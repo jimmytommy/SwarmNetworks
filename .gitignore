@@ -3,10 +3,5 @@ out/*
 *.class
 *.iml
 
-src/test_monitor.csv
-src/CongestionHashBFRouter.csv
-src/CongestionAntRouter.csv
-src/AdHocPheromones.csv
 src/.DS_Store
-
-src/test_monitor
+*.csv
