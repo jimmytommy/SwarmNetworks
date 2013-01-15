@@ -18,8 +18,10 @@ import java.util.Random;
 
 public class AdHocTest implements Runnable {
 
+    private long seed;
+
     public void run() {
-        long seed = new Random().nextLong();
+        seed = new Random().nextLong();
 
         System.out.println("AdHocTest");
         System.out.println("Running Test with BF Router");
@@ -34,8 +36,8 @@ public class AdHocTest implements Runnable {
         Router     r = hbf;
         Mailer     m = new SimpleMailer(a, b);
 
-        Network n = new Network(t, r, m, 1, 10000, 20);
-        System.out.println(n);
+        Network n = new Network(t, r, m, 10, 100, 20);
+        //System.out.println(n);
 
         for (int i = 0; i < 100; i++) r.updateRouter();
 
@@ -50,19 +52,27 @@ public class AdHocTest implements Runnable {
         bfcm.printStats();
 
         System.out.println("Running Test with Ant Router");
-        gt = new GeographicTopography(seed, 10, 2.0, 5);
-        AntRouter ar = new AntRouter(1.0,1.0,1.0,.1,1.0, "AdHocPheromones.csv");
 
-        a = gt.getRandomNode();
-        b = gt.getRandomNode();
+        for (int i = 5; i < 51; i+=5) {
+            runAnt(i);
+        }
+        
+    }
+
+    private void runAnt(int weightPh) {
+        GeographicTopography gt = new GeographicTopography(seed, 10, 2.0, 5);
+        AntRouter ar = new AntRouter(weightPh,1.0,1.0,.1,1.0, "AdHocPheromones.csv");
+
+        Node a = gt.getRandomNode();
+        Node b = gt.getRandomNode();
         while (a == b) b = gt.getRandomNode();
 
-        t = gt;
-        r = ar;
-        m = new SimpleMailer(a, b);
+        Topography t = gt;
+        Router r = ar;
+        Mailer m = new SimpleMailer(a, b);
 
-        n = new Network(t, r, m, 1, 10000, 20);
-        System.out.println(n);
+        Network n = new Network(t, r, m, 10, 100, 20);
+        //System.out.println(n);
 
         ConclusionMonitor arcm = new ConclusionMonitor();
         n.registerMonitor(arcm);
@@ -72,7 +82,7 @@ public class AdHocTest implements Runnable {
 
         n.run(10000);
 
-        System.out.println("Ant Router");
+        System.out.println("Ant Router " + weightPh);
         arcm.printStats();
     }
 

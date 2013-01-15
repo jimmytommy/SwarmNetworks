@@ -10,3 +10,9 @@ src/AdHocPheromones.csv
 src/.DS_Store
 
 src/test_monitor
+
+AdHoc.png
+
+TreeGraph.png
+
+src/BinaryTreePheromones.csv

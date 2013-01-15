@@ -24,7 +24,7 @@ public class BinaryTreeTest implements Runnable {
         Router     r = hbf;
         Mailer     m = new SimpleMailer(bbt.getRoot(), bbt.getLeaf());
 
-        Network n = new Network(t, r, m, 10, 10, 1);
+        Network n = new Network(t, r, m, 10, 100, 1);
         r.updateRouter();
 
         ConclusionMonitor bfcm = new ConclusionMonitor();
@@ -32,7 +32,7 @@ public class BinaryTreeTest implements Runnable {
         // n.registerMonitor(new PrintMonitor());
         // n.registerMonitor(new CsvMonitor("CongestionHashBFRouter.csv"));
 
-        n.run(10000);   
+        n.run(500);   
 
         System.out.println("Conclusions");
         System.out.println("BF Router");
@@ -40,7 +40,9 @@ public class BinaryTreeTest implements Runnable {
 
         for (int i = 5; i < 51; i+=5) {
             runAnt(i);
-        }    
+        }
+        
+            
     }
 
     private void runAnt(int weightPH) {
@@ -52,7 +54,7 @@ public class BinaryTreeTest implements Runnable {
         Router r = ar;
         Mailer m = new SimpleMailer(bbt.getRoot(), bbt.getLeaf());
 
-        Network n = new Network(t, r, m, 10, 10, 1);
+        Network n = new Network(t, r, m, 10, 100, 1);
 
         ConclusionMonitor arcm = new ConclusionMonitor();
         n.registerMonitor(arcm);
@@ -60,7 +62,7 @@ public class BinaryTreeTest implements Runnable {
          //n.registerMonitor(new PrintMonitor());
         // n.registerMonitor(new CsvMonitor("CongestionAntRouter.csv"));
 
-        n.run(10000);
+        n.run(500);
 
         System.out.println("Ant Router " + weightPH);
         arcm.printStats();
