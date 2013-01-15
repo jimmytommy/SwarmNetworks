@@ -18,7 +18,7 @@ public class CsvMonitor implements Monitor {
             e.printStackTrace();
         }
 
-        String s = "status, source address, destination address, ttl, payload, FailureCondition\n";
+        String s = "status, source address, destination address, ttl, payload, path length, FailureCondition\n";
         try {
             out.write(s);
         }
@@ -34,6 +34,7 @@ public class CsvMonitor implements Monitor {
         s += packet.getDstAddr() + ", ";
         s += packet.getTtl() + ", ";
         s += packet.getPayload() + ", ";
+        s += packet.getNodeRoute().size() + ", ";
         s += fc + "\n";
 
         try {
@@ -51,7 +52,8 @@ public class CsvMonitor implements Monitor {
         s += packet.getSrcAddr() + ", ";
         s += packet.getDstAddr() + ", ";
         s += packet.getTtl() + ", ";
-        s += packet.getPayload() + "\n";
+        s += packet.getPayload() + ", ";
+        s += packet.getNodeRoute().size() + "\n";
 
         try  {
             out.write(s);
