@@ -44,7 +44,7 @@ public class AdHocTest implements Runnable {
         ConclusionMonitor bfcm = new ConclusionMonitor();
         n.registerMonitor(bfcm);
         //n.registerMonitor(new PrintMonitor());
-         //n.registerMonitor(new CsvMonitor("CongestionHashBFRouter.csv"));
+        n.registerMonitor(new CsvMonitor("AdHocHashBFRouter.csv"));
 
         n.run(10000);
 
@@ -53,9 +53,12 @@ public class AdHocTest implements Runnable {
 
         System.out.println("Running Test with Ant Router");
 
+        runAnt(5);
+        /*
         for (int i = 5; i < 51; i+=5) {
             runAnt(i);
         }
+        */
         
     }
 
@@ -78,7 +81,7 @@ public class AdHocTest implements Runnable {
         n.registerMonitor(arcm);
         n.registerMonitor(ar);
         // n.registerMonitor(new PrintMonitor());
-         //n.registerMonitor(new CsvMonitor("CongestionAntRouter.csv"));
+        n.registerMonitor(new CsvMonitor("AdHocAntRouter.csv"));
 
         n.run(10000);
 
